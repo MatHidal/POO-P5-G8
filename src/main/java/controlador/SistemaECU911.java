@@ -16,4 +16,84 @@ public ArrayList<Operador> getOperadores(){
 public ArrayList<Ciudadano> getCiudadanos(){
  return ciudadanos;
 }
+/**
+ * Precarga los datos iniciales requeridos al arrancar la aplicación:
+ * 1 operador, 1 ciudadano, 1 llamada de emergencia y 1 nota de seguimiento.
+ */
+public void cargarDatosIniciales() {
+    Operador op1 = new Operador("Laura", "Mendoza", "Matutino", "l.mendoza@ecu911.gob.ec");
+    operadores.add(op1);
+    Ciudadano ciu1 = new Ciudadano("0934567890", "Luis", "Andrade Mora");
+    ciudadanos.add(ciu1);
+    LlamadaEmergencia ll1 = new LlamadaEmergencia(
+                ciu1,
+                op1,
+                "Medio ambiente",
+                "Guayaquil",
+                "Alborada",
+                "Quema de maleza reportada cerca del parque."
+        );
+        llamadas.add(ll1);
+        op1.incrementarLlamadas();
+        NotaSeguimiento nota1 = new NotaSeguimiento(
+                op1,
+                "Se coordina despacho con el Cuerpo de Bomberos de Guayaquil."
+        );
+        ll1.agregarNota(nota1);
+    }
+    /**
+     * Registra un nuevo operador en el sistema.
+     *
+     * @param nombres   Nombres del operador.
+     * @param apellidos Apellidos del operador.
+     * @param turno     Turno asignado (Matutino, Vespertino, Nocturno).
+     * @param email     Correo electrónico (puede ser vacío).
+     * @return El objeto Operador creado con su código autogenerado.
+     */
+    public Operador agregarOperador(String nombres, String apellidos, String turno, String email) {
+        Operador nuevo = new Operador(nombres, apellidos, turno, email);
+        operadores.add(nuevo);
+        return nuevo;
+    }
+    /**
+     * Busca un operador por su código único.
+     *
+     * @param codigo Código del operador.
+     * @return El objeto Operador si existe, o null si no se encuentra.
+     */
+    public Operador buscarOperadorPorCodigo(String codigo) {
+        for (Operador op : operadores) {
+            if (op.getCodigo().equalsIgnoreCase(codigo.trim())) {
+                return op;
+            }
+        }
+        return null;
+    }
+    /**
+     * Cuenta cuántas llamadas tiene registradas un operador específico.
+     *
+     * @param operador El operador a consultar.
+     * @return Cantidad de llamadas atendidas por dicho operador.
+     */
+    public int contarLlamadasDeOperador(Operador operador) {
+        int contador = 0;
+        for (LlamadaEmergencia ll : llamadas) {
+            if (ll.getOperador().getCodigo().equalsIgnoreCase(operador.getCodigo())) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+    /**
+     * Elimina un operador del sistema siempre y cuando no tenga llamadas asociadas.
+     *
+     * @param operador El operador que se desea eliminar.
+     * @return true si fue eliminado exitosamente; false si tiene llamadas registradas.
+     */
+    public boolean eliminarOperador(Operador operador) {
+        if (contarLlamadasDeOperador(operador) > 0) {
+            return false;
+        }
+        return operadores.remove(operador); 
+    }
 }
