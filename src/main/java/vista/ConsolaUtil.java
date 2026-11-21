@@ -46,7 +46,7 @@ public class  ConsolaUtil {
     }
     public static boolean leerConfirmacion(String pedir_dato, Scanner sc){
         System.out.println(pedir_dato);
-        String resp= sc.nextLine().trim().toUppercase();
+        String resp= sc.nextLine().trim().toUpperCase();
         while (!resp.equals("S") && !resp.equals("N")) {
             System.out.println("Respuesta no válida. Ingrese S para confirmar o N para cancelar.");
             System.out.print(pedir_dato);

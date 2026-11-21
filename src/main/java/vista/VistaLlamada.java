@@ -2,7 +2,7 @@ package vista;
 import controlador.SistemaECU911;
 import java.util.Scanner;
 import java.util.ArrayList;
-import modelo.LlamadaEmergencia;
+import modelo.*;
 public class VistaLlamada {
   private SistemaECU911 sistema;
   private Scanner scanner;
@@ -12,6 +12,90 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
         this.scanner = scanner;
     }
 
+    private void registrarLlamada(){
+        System.out.println("\n--- REGISTRAR LLAMADA ---");
+        System.out.println("Ingrese cedula del ciudadano: ");
+        String cedula = scanner.nextLine();
+        Ciudadano ciu = sistema.buscarCiudadano(cedula);
+        
+        if(ciu == null){
+            System.out.println("Ciudadano no registrado. Ingrese los datos:");
+            System.out.println("Nombres: ");
+            String nombres = scanner.nextLine();
+            System.out.print("Apellidos: ");
+            String apellidos = scanner.nextLine();
+            ciu = new Ciudadano(cedula,nombres,apellidos);
+            sistema.getCiudadanos().add(ciu);
+        }
+        
+        ArrayList<Operador> operadores = sistema.getOperadores();
+        System.out.println("Operadores disponibles: ");
+        for(Operador op: operadores){
+            System.out.println(op.getCodigo()+" | " + op.getNombres() + " " + op.getApellidos());
+        }
+        System.out.println("Ingrese codigo del operador: ");
+        String codOp = scanner.nextLine();
+        Operador op = sistema.buscarOperadorPorCodigo(codOp);
+        
+        if(op == null){
+            System.out.println("Operador no encontrado. Registro cancelado.");
+            return;
+        }
+        System.out.println("Tipo de emergencia");
+        String tipo = scanner.nextLine();
+        System.out.println("Ciudad: ");
+        String ciudad = scanner.nextLine();
+        System.out.print("Direccion o sector: ");
+        String direccion = scanner.nextLine();
+        System.out.print("Descripcion: ");
+        String descripcion = scanner.nextLine();
+        
+        LlamadaEmergencia nueva = sistema.registrarLlamada(ciu, op, tipo, ciudad, direccion, descripcion);
+        System.out.println("Llamada registrada con codigo: "+ nueva.getCodigo());
+    }
+
+    
+    private void anularLlamada(){
+        System.out.println("\nSISTEMA DE REGISTRO DE LLAMADAS ECU 911 (Version 1.0)");
+        System.out.println("[Menu Principal > 1. Llamadas > 1.4. Anular llamada]");
+        
+        ArrayList<LlamadaEmergencia> lista = sistema.getLlamadas();
+        int disponibles = 0;
+        
+        System.out.println("Llamadas que se pueden anular (Registradas hoy):");
+        for(LlamadaEmergencia ll: lista){
+            if(ll.anular()){
+                System.out.println(ll.getCodigo() + " | " + ll.getFechaHora() + " | " + ll.getCiudadano().getNombres() + " " + ll.getCiudadano().getApellidos());
+                disponibles++;
+            }
+        }
+        if(disponibles == 0){
+            System.out.println("No existan llamadas que cumplan los requisistos para anular");
+            System.out.println("\nPresione ENTER para regresar al Menu de llamadas...");
+            scanner.nextLine();
+            return;
+        }
+        System.out.println("> Ingrese el codigo de la llamada a anular (ej. LL-1): ");
+        String codigo = scanner.nextLine();
+        
+        LlamadaEmergencia ll = sistema.buscarLlamadaPorCodigo(codigo);
+        if( ll == null || ll.anular() == false){
+            System.out.println("Error: Codigo no encontrado o la llamada no se puede anular");
+        }else{
+            System.out.println("Advertencia: Esta accion eliminara la llamada " + ll.getCodigo() + " del sistema");
+            System.out.println("> Confirma la anulacion? (S/N): ");
+            String respuesta = scanner.nextLine();
+            
+            if (respuesta.equalsIgnoreCase("S")) {
+                sistema.getLlamadas().remove(ll);
+                System.out.println("Llamada anulada correctamente");
+            }else{
+                System.out.println("Anulacion cancelada");
+            }
+        }
+        System.out.println("\nPresione ENTER para regresar al Menu de Llamadas...");
+        scanner.nextLine();
+    }
     public void mostrarMenu() { //Menu Principal - SG
         int opcion = 0;
 
@@ -31,13 +115,13 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
                     listarLlamadas();
                     break;
                 case 2:
-                    System.out.println("Pendiente.");
+                    registrarLlamada();
                     break;
                 case 3:
                     actualizarEstado();
                     break;
                 case 4:
-                    System.out.println("Pendiente.");
+                    anularLlamada();
                     break;
                 case 5:
                     System.out.println("Regresando...");
@@ -62,7 +146,18 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
             }
         }
     }
-
+    private boolean esCedulaValida(String cedula){
+        if(cedula.length() != 10){
+            return false;
+        }
+        for (int i = 0; i < cedula.length(); i++) {
+            char c = cedula.charAt(i);
+            if(c < '0' || c > '9' ){
+                return false;
+            }
+        }
+        return true;
+    }
     private void actualizarEstado() { //Actualizar Estado - SG
         System.out.println("\n--- ACTUALIZAR ESTADO ---");
         ArrayList<LlamadaEmergencia> lista = sistema.getLlamadas();
@@ -85,5 +180,5 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
                 System.out.println("No se encontro la llamada o ya fue atendida.");
             }
         }
-    }
+    } 
 }

@@ -1,6 +1,7 @@
 package controlador;
 import modelo.*;
 import java.util.ArrayList;
+import vista.VistaLlamada;
 public class SistemaECU911 {
     private ArrayList<LlamadaEmergencia> llamadas = new ArrayList<>();
     private ArrayList<Operador> operadores = new ArrayList<>();
@@ -28,7 +29,12 @@ public LlamadaEmergencia buscarLlamadaPorCodigo(String Codigo){
     return null;
 }
 
-
+public LlamadaEmergencia registrarLlamada(Ciudadano ciudadano, Operador operador, String tipoEmergencia, String ciudad, String direccion, String descripcion){
+    LlamadaEmergencia nueva = new LlamadaEmergencia(ciudadano, operador, tipoEmergencia, ciudad, direccion, descripcion);
+    llamadas.add(nueva);
+    operador.incrementarLlamadas();
+    return nueva;
+}
 /**
  * Precarga los datos iniciales requeridos al arrancar la aplicación:
  * 1 operador, 1 ciudadano, 1 llamada de emergencia y 1 nota de seguimiento.
