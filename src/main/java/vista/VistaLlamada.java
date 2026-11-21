@@ -1,6 +1,8 @@
 package vista;
 import controlador.SistemaECU911;
 import java.util.Scanner;
+import java.util.ArrayList;
+import modelo.LlamadaEmergencia;
 public class VistaLlamada {
   private SistemaECU911 sistema;
   private Scanner scanner;
@@ -26,7 +28,7 @@ public void mostrarMenu() { //Menú Principal
 
             switch (opcion) {
                 case "1":
-                    System.out.println("Pendiente: Listar llamadas.");
+                    listarLlamadas();
                     break;
                 case "2":
                     System.out.println("Pendiente: Registrar llamada.");
@@ -45,4 +47,34 @@ public void mostrarMenu() { //Menú Principal
             }
         }
     }  
+private void listarLlamadas() {
+        System.out.println("\nSISTEMA DE REGISTRO DE LLAMADAS ECU 911 (Version 1.0)");
+        System.out.println("[Menu Principal > 1. Llamadas > 1.1. Lista de llamadas]");
+
+        ArrayList<LlamadaEmergencia> lista = sistema.getLlamadas();
+
+        if (lista.size() == 0) {
+            System.out.println("No existen llamadas registradas en el sistema.");
+        } else {
+            System.out.println("Se encontraron " + lista.size() + " llamadas registradas.");
+            System.out.println("CODIGO | FECHA Y HORA | CIUDADANO | TIPO | CIUDAD | ESTADO");
+
+            for (int i = lista.size() - 1; i >= 0; i--) {
+                LlamadaEmergencia ll = lista.get(i);
+                String nombre = ll.getCiudadano().getNombres() + " " + ll.getCiudadano().getApellidos();
+
+                System.out.println(
+                    ll.getCodigo() + " | " +
+                    ll.getFechaHora() + " | " +
+                    nombre + " | " +
+                    ll.getTipoEmergencia() + " | " +
+                    ll.getCiudad() + " | " +
+                    ll.getEstado()
+                );
+            }
+        }
+
+        System.out.print("\nPresione ENTER para regresar al Menu de Llamadas...");
+        scanner.nextLine();
+    }
 }
