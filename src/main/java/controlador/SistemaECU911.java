@@ -63,7 +63,7 @@ public void cargarDatosIniciales() {
      * @param email     Correo electrónico (puede ser vacío).
      * @return El objeto Operador creado con su código autogenerado.
      */
-    public Operador agregarOperador(String nombres, String apellidos, String turno, String email) {
+    public Operador registrarOperador(String nombres, String apellidos, String turno, String email) {
         Operador nuevo = new Operador(nombres, apellidos, turno, email);
         operadores.add(nuevo);
         return nuevo;
@@ -98,26 +98,29 @@ public void cargarDatosIniciales() {
         return contador;
     }
     /**
-     * Elimina un operador del sistema siempre y cuando no tenga llamadas asociadas.
+     * Elimina un operador del sistema por su código siempre y cuando no tenga
+     * llamadas asociadas.
      *
-     * @param operador El operador que se desea eliminar.
-     * @return true si fue eliminado exitosamente; false si tiene llamadas registradas.
+     * @param codigo Código del operador que se desea eliminar.
+     * @return true si fue eliminado exitosamente; false si no existe o tiene
+     *         llamadas registradas.
      */
-    public boolean eliminarOperador(Operador operador) {
-        if (contarLlamadasDeOperador(operador) > 0) {
+    public boolean eliminarOperador(String codigo) {
+        Operador operador = buscarOperadorPorCodigo(codigo);
+        if (operador == null || contarLlamadasDeOperador(operador) > 0) {
             return false;
         }
-        return operadores.remove(operador); 
+        return operadores.remove(operador);
     }
-    
-    public Ciudadano buscarCiudadano(String cedula){
-    for (Ciudadano c : ciudadanos) {
-        if(c.getCedula().equals(cedula)){
-            return c;
+
+    public Ciudadano buscarCiudadano(String cedula) {
+        for (Ciudadano c : ciudadanos) {
+            if (c.getCedula().equals(cedula)) {
+                return c;
+            }
         }
+        return null;
     }
-    return null;
-}
     public boolean actualizarEstadoLlamada(String codigo) {
         for (int i = 0; i < llamadas.size(); i++) {
             LlamadaEmergencia ll = llamadas.get(i);
@@ -128,4 +131,5 @@ public void cargarDatosIniciales() {
         }
         return false;
     }
+
 }
