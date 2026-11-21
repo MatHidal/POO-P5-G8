@@ -118,4 +118,14 @@ public void cargarDatosIniciales() {
     }
     return null;
 }
+    public boolean actualizarEstadoLlamada(String codigo) {
+        for (int i = 0; i < llamadas.size(); i++) {
+            LlamadaEmergencia ll = llamadas.get(i);
+            if (ll.getCodigo().equals(codigo) && !ll.getEstado().equals("Atendida")) {
+                ll.actualizarEstado();
+                return true;
+            }
+        }
+        return false;
+    }
 }
