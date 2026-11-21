@@ -11,11 +11,11 @@ public class  ConsolaUtil {
         }
         return texto.trim();
     }
-    public static int validarCedula(Scanner sc, String pedir_dato){
+    public static String validarCedula(Scanner sc, String pedir_dato){
         System.out.println(pedir_dato);
-        int num= sc.nexLine().trim();
-        while not (num.lenght()==10 || cedula.matches("\\d+")){
-            System.out.printl("Ingrese nuevamente, se requieren 10 digitos");
+        String num= sc.nextLine().trim();
+        while (!(num.length()==10 && num.matches("\\d+"))){
+            System.out.println("Ingrese nuevamente, se requieren 10 digitos");
             System.out.println(pedir_dato);
             num=sc.nextLine().trim();
         }
