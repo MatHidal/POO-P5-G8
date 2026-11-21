@@ -14,7 +14,6 @@ public class Main {
      */
     public static void main(String[] args) {
         SistemaECU911 sistema = new SistemaECU911();
-        sistema.cargarDatosIniciales();
 
         Scanner scanner = new Scanner(System.in);
         VistaPrincipal vistaPrincipal = new VistaPrincipal(sistema, scanner);
