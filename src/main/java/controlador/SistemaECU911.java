@@ -6,6 +6,9 @@ public class SistemaECU911 {
     private ArrayList<Operador> operadores = new ArrayList<>();
     private ArrayList<Ciudadano> ciudadanos = new ArrayList<>();
 
+    public SistemaECU911() {
+        cargarDatosIniciales();
+    }
 //Aplicando encapsulamineto atributos privados para leerlos desde afuera con get
 public ArrayList<LlamadaEmergencia> getLlamadas(){
  return llamadas;
@@ -16,6 +19,16 @@ public ArrayList<Operador> getOperadores(){
 public ArrayList<Ciudadano> getCiudadanos(){
  return ciudadanos;
 }
+public LlamadaEmergencia buscarLlamadaPorCodigo(String Codigo){
+    for(LlamadaEmergencia ll: llamadas){
+        if(ll.getCodigo().equals(Codigo)){
+            return ll;
+        }
+    }
+    return null;
+}
+
+
 /**
  * Precarga los datos iniciales requeridos al arrancar la aplicación:
  * 1 operador, 1 ciudadano, 1 llamada de emergencia y 1 nota de seguimiento.
@@ -96,4 +109,13 @@ public void cargarDatosIniciales() {
         }
         return operadores.remove(operador); 
     }
+    
+    public Ciudadano buscarCiudadano(String cedula){
+    for (Ciudadano c : ciudadanos) {
+        if(c.getCedula().equals(cedula)){
+            return c;
+        }
+    }
+    return null;
+}
 }
