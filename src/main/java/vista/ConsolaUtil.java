@@ -36,7 +36,8 @@ public class  ConsolaUtil {
                 else {
                     System.out.println("Opción inválida, ingrese un número entre " + min + " y " + max);
                 }
-            } catch (NumberFormatException error) {
+            } 
+            catch (NumberFormatException error) {
                 System.out.println("Opción inválida, ingrese nuevamente un número.");
             }
         }
