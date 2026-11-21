@@ -115,7 +115,7 @@ public class VistaOperador {
         System.out.println("Ingrese el email del operador (opcional, presione Enter para omitir):");
         String email = scanner.nextLine().trim();
 
-        Operador nuevo = sistema.agregarOperador(nombres, apellidos, turno, email);
+        Operador nuevo = sistema.registrarOperador(nombres, apellidos, turno, email);
         System.out.println("Operador registrado exitosamente con codigo: " + nuevo.getCodigo());
     }
 
@@ -146,7 +146,7 @@ public class VistaOperador {
         String confirmacion = scanner.nextLine().trim();
 
         if (confirmacion.equalsIgnoreCase("S")) {
-            if (sistema.eliminarOperador(encontrado)) {
+            if (sistema.eliminarOperador(encontrado.getCodigo())) {
                 System.out.println("Operador eliminado correctamente.");
             } else {
                 System.out.println("No se pudo eliminar el operador.");
