@@ -32,9 +32,4 @@ public class NotaSeguimiento {
     public String getCodigo() {
         return codigo;
     }
-    
-    
-    
-    
-    
 }
