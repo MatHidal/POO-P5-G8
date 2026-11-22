@@ -4,8 +4,16 @@ import modelo.Ciudadano;
 import modelo.LlamadaEmergencia;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * Vista de consola para administrar y consultar los ciudadanos registrados.
+ */
 public class VistaCiudadano {
+    /**
+     * Muestra el listado de ciudadanos y permite consultar el historial de llamadas por cédula.
+     *
+     * @param sc Scanner para leer las entradas del usuario.
+     * @param sistema Controlador principal de ECU 911.
+     */
     public static void administrarCiudadanos(Scanner sc, SistemaECU911 sistema) {
         boolean salir = false;
         while (!salir) {
