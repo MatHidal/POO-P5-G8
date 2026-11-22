@@ -11,10 +11,12 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
         this.sistema = sistema;
         this.scanner = scanner;
     }
-/*Pide la cedula ingresada, en caso de cumplir con el formato de un numero de cedula y no existir pide los datos del ciudadano para Registrarlo. 
-Posteriormente imprime los operadores disponibles para que ingrese el codigo del operador que desea que lo atienda; en donde si el codigo no existe
-cancela el registro caso contrario se continua con el registro pidiendo los datos necesarios para registrar la llamada e imprimer el codigo  con el 
-que se la registró*/
+    /**
+     * Solicita la cédula del ciudadano y valida su formato; si es inválida, cancela el registro.
+     * Si el ciudadano no está registrado, solicita sus datos y lo agrega al sistema. Luego muestra
+     * los operadores disponibles, valida el código ingresado (cancelando si no existe), solicita los
+     * detalles de la emergencia, registra la llamada e imprime su código generado.
+     */
     private void registrarLlamada(){
         System.out.println("\n--- REGISTRAR LLAMADA ---");
         System.out.println("Ingrese cedula del ciudadano: ");
@@ -61,10 +63,12 @@ que se la registró*/
         System.out.println("Llamada registrada con codigo: "+ nueva.getCodigo());
     }
 
-    /*Muestra en pantalla un mensaje para posteriormente obtener el ArrayList de objetos LlamadaEmergencia, recorre la lista en donde imprime
-    cada llamada que está disponible para anular; si no está disponible ninguna se lo da a conocer al usuario y sale del método;
-    caso contrario le pide al usuario el código de la llamada que desea anular, en donde el método busca la llamada y si la llamada no existe o
-    no es posible anularla se lo da a conocer al usuario; caso contrario le pide que confirme anulándola y, de ser el caso, la elimina del sistema*/
+    /**
+     * Lista las llamadas de emergencia disponibles para anular (registradas hoy en estado registrada).
+     * Si no hay disponibles, informa al usuario y retorna; de lo contrario, solicita el código de la
+     * llamada, verifica que exista y pueda anularse, pide confirmación y, si se confirma, la elimina
+     * del sistema.
+     */
     private void anularLlamada(){
         System.out.println("\nSISTEMA DE REGISTRO DE LLAMADAS ECU 911 (Version 1.0)");
         System.out.println("[Menu Principal > 1. Llamadas > 1.4. Anular llamada]");
@@ -156,8 +160,13 @@ que se la registró*/
             }
         }
     }
-    /*Verifica que la cédula ingresada tenga una longitud de 10, tambien que cada carácter no sea menor a '0' ni mayor a '9' si cumple eso retorna 
-    un booleano true, de no ser el caso retorna false*/
+    /**
+     * Verifica que la cédula tenga exactamente 10 caracteres y que cada uno sea un dígito
+     * entre {@code '0'} y {@code '9'}.
+     *
+     * @param cedula Cadena con el número de cédula a validar.
+     * @return {@code true} si cumple con el formato; {@code false} en caso contrario.
+     */
     private boolean esCedulaValida(String cedula){
         if(cedula.length() != 10){
             return false;

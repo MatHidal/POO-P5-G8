@@ -6,7 +6,10 @@ public class SistemaECU911 {
     private ArrayList<LlamadaEmergencia> llamadas = new ArrayList<>();
     private ArrayList<Operador> operadores = new ArrayList<>();
     private ArrayList<Ciudadano> ciudadanos = new ArrayList<>();
-    //Constructor que llama a cargarDatosIniciales
+    /**
+     * Crea una nueva instancia del controlador {@code SistemaECU911}
+     * e inicializa los datos precargados del sistema.
+     */
     public SistemaECU911() {
         cargarDatosIniciales();
     }
@@ -20,7 +23,12 @@ public ArrayList<Operador> getOperadores(){
 public ArrayList<Ciudadano> getCiudadanos(){
  return ciudadanos;
 }
-//En la ArrayList de llamadas busca la que coincida con el codigo ingresado para devolver dicha llamada, caso contrario devuelve nulo
+/**
+* Busca una llamada de emergencia por su código único en la lista de llamadas.
+*
+* @param Codigo Código de la llamada a buscar.
+* @return El objeto {@link LlamadaEmergencia} si coincide con el código; {@code null} en caso contrario.
+*/
 public LlamadaEmergencia buscarLlamadaPorCodigo(String Codigo){
     for(LlamadaEmergencia ll: llamadas){
         if(ll.getCodigo().equals(Codigo)){
@@ -120,7 +128,12 @@ public void cargarDatosIniciales() {
         }
         return operadores.remove(operador);
     }
-////En la ArrayList ciudadanos busca el ciudadano que tenga la cédula ingresada y lo retorna,caso contrario retorna nulo
+    /**
+     * Busca un ciudadano en la lista de ciudadanos registrados según su número de cédula.
+     *
+     * @param cedula Número de cédula del ciudadano a buscar.
+     * @return El objeto {@link Ciudadano} si se encuentra coincidencia; {@code null} si no existe.
+     */
     public Ciudadano buscarCiudadano(String cedula) {
         for (Ciudadano c : ciudadanos) {
             if (c.getCedula().equals(cedula)) {
