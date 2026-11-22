@@ -3,11 +3,20 @@ import controlador.SistemaECU911;
 import java.util.Scanner;
 import java.util.ArrayList;
 import modelo.*;
+/**
+ * Vista de consola encargada de gestionar las operaciones relacionadas con las
+ * llamadas de emergencia del sistema ECU 911.
+ */
 public class VistaLlamada {
   private SistemaECU911 sistema;
   private Scanner scanner;
-
-public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
+  /**
+     * Crea la vista de llamadas con el controlador del sistema y el lector de consola.
+     *
+     * @param sistema Controlador principal del sistema ECU 911.
+     * @param scanner Scanner para leer las entradas del usuario.
+     */
+public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { 
         this.sistema = sistema;
         this.scanner = scanner;
     }
@@ -110,7 +119,10 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
         System.out.println("\nPresione ENTER para regresar al Menu de Llamadas...");
         scanner.nextLine();
     }
-    public void mostrarMenu() { //Menu Principal - SG
+    /**
+     * Muestra el menu de opciones para administrar las llamadas de emergencia.
+     */
+    public void mostrarMenu() {
         int opcion = 0;
 
         while (opcion != 5) {
@@ -145,8 +157,10 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
             }
         }
     }
-
-    private void listarLlamadas() { //Listar Llamada - SG
+/**
+     * Muestra en consola todas las llamadas registradas, ordenadas desde la mas reciente.
+     */
+    private void listarLlamadas() { 
         System.out.println("\n--- LISTA DE LLAMADAS ---");
         ArrayList<LlamadaEmergencia> lista = sistema.getLlamadas();
 
@@ -179,7 +193,10 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) { //Constructor - SG
         }
         return true;
     }
-    private void actualizarEstado() { //Actualizar Estado - SG
+    /**
+     * Lista las llamadas registradas, solicita un codigo y pide al sistema actualizar su estado.
+     */
+    private void actualizarEstado() { 
         System.out.println("\n--- ACTUALIZAR ESTADO ---");
         ArrayList<LlamadaEmergencia> lista = sistema.getLlamadas();
 
