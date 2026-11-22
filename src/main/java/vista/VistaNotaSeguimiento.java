@@ -1,12 +1,10 @@
 package vista;
-
 import controlador.SistemaECU911;
 import modelo.LlamadaEmergencia;
 import modelo.NotaSeguimiento;
 import modelo.Operador;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 /**
  * Vista de consola para consultar y registrar notas de seguimiento de las llamadas.
  */
@@ -39,7 +37,7 @@ public class VistaNotaSeguimiento {
 
             if (opcion == 1) {
                 agregarNota(sc, sistema, llamada);
-                esperarEnter(sc, "\nPresione ENTER para actualizar y volver a Notas de seguimiento...");
+                esperarEnter(sc, "\nPresione ENTER para actualizar y volver a Notas de seguimiento");
             } 
             else if (opcion == 2) {
                 salir = true;
@@ -57,7 +55,7 @@ public class VistaNotaSeguimiento {
         ArrayList<NotaSeguimiento> notas = llamada.getNotas();
 
         if (notas == null || notas.isEmpty()) {
-            System.out.println("No hay notas de seguimiento registradas para esta llamada.");
+            System.out.println("No hay notas de seguimiento registradas para esta llamada");
             return;
         }
         for (int i = notas.size() - 1; i >= 0; i--) {
