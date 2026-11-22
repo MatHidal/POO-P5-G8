@@ -1,7 +1,10 @@
 package controlador;
 import modelo.*;
 import java.util.ArrayList;
-import vista.VistaLlamada;
+/**
+ * Controlador principal del sistema ECU 911 encargado de gestionar llamadas,
+ * operadores y ciudadanos.
+ */
 public class SistemaECU911 {
     private ArrayList<LlamadaEmergencia> llamadas = new ArrayList<>();
     private ArrayList<Operador> operadores = new ArrayList<>();
@@ -13,13 +16,27 @@ public class SistemaECU911 {
     public SistemaECU911() {
         cargarDatosIniciales();
     }
-//Aplicando encapsulamineto atributos privados para leerlos desde afuera con get
+/**
+     * Obtiene la lista de llamadas de emergencia registradas.
+     *
+     * @return Lista de llamadas de emergencia.
+     */    
 public ArrayList<LlamadaEmergencia> getLlamadas(){
  return llamadas;
 }
+/**
+     * Obtiene la lista de operadores registrados en el sistema.
+     *
+     * @return Lista de operadores.
+     */
 public ArrayList<Operador> getOperadores(){
  return operadores;
 }
+/**
+     * Obtiene la lista de ciudadanos registrados en el sistema.
+     *
+     * @return Lista de ciudadanos.
+     */
 public ArrayList<Ciudadano> getCiudadanos(){
  return ciudadanos;
 }
@@ -142,6 +159,12 @@ public void cargarDatosIniciales() {
         }
         return null;
     }
+    /**
+     * Busca una llamada por su codigo y avanza su estado si aun no ha sido atendida.
+     *
+     * @param codigo Codigo de la llamada a actualizar.
+     * @return true si el estado se actualizo correctamente; false si no existe o ya esta atendida.
+     */
     public boolean actualizarEstadoLlamada(String codigo) {
         for (int i = 0; i < llamadas.size(); i++) {
             LlamadaEmergencia ll = llamadas.get(i);
