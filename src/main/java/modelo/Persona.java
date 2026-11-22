@@ -1,13 +1,13 @@
-package modelo;
+package modelo;//Clase padre de Operador y Ciudadano
 public class Persona {
     private String nombres;
     private String apellidos;
-
+    //Constructor
     public Persona(String nombres, String apellidos) {
         this.nombres = nombres;
         this.apellidos = apellidos;
     }
-
+    //Getters y Setters de sus atributos
     public String getNombres() {
         return nombres;
     }
