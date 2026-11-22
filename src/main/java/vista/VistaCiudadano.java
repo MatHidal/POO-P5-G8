@@ -27,7 +27,7 @@ public class VistaCiudadano {
             int opcion = ConsolaUtil.validarOpcionMenu(sc, "> Seleccione una opción (1-2): ", 1, 2);
             if (opcion == 1) {
                 consultarHistorial(sc, sistema);
-                ConsolaUtil.esperarEnter(sc, "\nPresione ENTER para regresar a Administrar ciudadanos...");
+                ConsolaUtil.esperarEnter(sc, "\nPresione ENTER para regresar a Administrar ciudadanos");
             } 
             else if (opcion == 2) {
                 salir = true;
@@ -58,8 +58,36 @@ public class VistaCiudadano {
                     }
                 }
             }
-            System.out.println(c.getCedula() + " | "
-                    + c.getNombres() + " " + c.getApellidos() + " | "
-                    + totalLlamadas);
+            System.out.println(c.getCedula() + " | " + c.getNombres() + " " + c.getApellidos() + " | " + totalLlamadas);
+        }
+    } 
+   /**
+     * Solicita la cédula de un ciudadano y muestra el historial de sus llamadas registradas.
+     *
+     * @param sc Scanner para leer la cédula ingresada.
+     * @param sistema Controlador principal del sistema ECU 911.
+     */
+    private static void consultarHistorial(Scanner sc, SistemaECU911 sistema) {
+        String cedula = ConsolaUtil.validarCedula(sc, "> Ingrese la cédula del ciudadano: ");
+        Ciudadano ciudadano = sistema.buscarCiudadano(cedula);
+        if (ciudadano == null) {
+            System.out.println("No se encontró un ciudadano con la cédula " + cedula + ".");
+            return;
+        }
+        System.out.println("\nHISTORIAL DE LLAMADAS - " + ciudadano.getNombres() + " " + ciudadano.getApellidos() + " (C.I. " + ciudadano.getCedula() + ")");
+        System.out.println("CÓDIGO | FECHA Y HORA | TIPO | BARRIO | ESTADO");
+        ArrayList<LlamadaEmergencia> llamadas = sistema.getLlamadas();
+        boolean tieneLlamadas = false;
+
+        if (llamadas != null) {
+            for (LlamadaEmergencia llamada : llamadas) {
+                if (llamada.getCiudadano() != null && llamada.getCiudadano().getCedula().equals(cedula)) {
+                    tieneLlamadas = true;
+                    System.out.println(llamada.getCodigo() + " | " + llamada.getFechaHora() + " | " + llamada.getTipoEmergencia() + " | " + llamada.getBarrio() + " | " + llamada.getEstado());
+                }
+            }
+        }
+        if (!tieneLlamadas) {
+            System.out.println("No se registran llamadas para este ciudadano.");
         }
     } 
