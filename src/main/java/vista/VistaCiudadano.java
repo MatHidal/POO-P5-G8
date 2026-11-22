@@ -91,3 +91,4 @@ public class VistaCiudadano {
             System.out.println("No se registran llamadas para este ciudadano.");
         }
     } 
+}
