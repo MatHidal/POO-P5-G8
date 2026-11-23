@@ -17,14 +17,14 @@ public class VistaCiudadano {
    public static void administrarCiudadanos(Scanner sc, SistemaECU911 sistema) {
         boolean salir = false;
         while (!salir) {
-            System.out.println("SISTEMA DE REGISTRO DE LLAMADAS ECU 911 (Versión 1.0)");
-            System.out.println("[Menú Principal > 3. Administrar ciudadanos]\n");
+            System.out.println("SISTEMA DE REGISTRO DE LLAMADAS ECU 911 (Version 1.0)");
+            System.out.println("[Menu Principal > 3. Administrar ciudadanos]\n");
             mostrarCiudadanos(sistema);
-            System.out.println("\n¿Qué acción desea realizar?");
+            System.out.println("\n¿Que accion desea realizar?");
             System.out.println("[1] Consultar historial de llamadas de un ciudadano");
-            System.out.println("[2] Regresar al Menú Principal");
+            System.out.println("[2] Regresar al Menu Principal");
 
-            int opcion = ConsolaUtil.validarOpcionMenu(sc, "> Seleccione una opción (1-2): ", 1, 2);
+            int opcion = ConsolaUtil.validarOpcionMenu(sc, "> Seleccione una opcion (1-2): ", 1, 2);
             if (opcion == 1) {
                 consultarHistorial(sc, sistema);
                 ConsolaUtil.esperarEnter(sc, "\nPresione ENTER para regresar a Administrar ciudadanos");
@@ -41,7 +41,7 @@ public class VistaCiudadano {
      */
     private static void mostrarCiudadanos(SistemaECU911 sistema) {
         System.out.println("Listado de ciudadanos registrados:");
-        System.out.println("CÉDULA | NOMBRE COMPLETO | TOTAL LLAMADAS");
+        System.out.println("CEDULA | NOMBRE COMPLETO | TOTAL LLAMADAS");
 
         ArrayList<Ciudadano> ciudadanos = sistema.getCiudadanos();
         ArrayList<LlamadaEmergencia> llamadas = sistema.getLlamadas();
@@ -68,14 +68,14 @@ public class VistaCiudadano {
      * @param sistema Controlador principal del sistema ECU 911.
      */
     private static void consultarHistorial(Scanner sc, SistemaECU911 sistema) {
-        String cedula = ConsolaUtil.validarCedula(sc, "> Ingrese la cédula del ciudadano: ");
+        String cedula = ConsolaUtil.validarCedula(sc, "> Ingrese la cedula del ciudadano: ");
         Ciudadano ciudadano = sistema.buscarCiudadano(cedula);
         if (ciudadano == null) {
-            System.out.println("No se encontró un ciudadano con la cédula " + cedula + ".");
+            System.out.println("No se encontro un ciudadano con la cedula " + cedula + ".");
             return;
         }
         System.out.println("\nHISTORIAL DE LLAMADAS - " + ciudadano.getNombres() + " " + ciudadano.getApellidos() + " (C.I. " + ciudadano.getCedula() + ")");
-        System.out.println("CÓDIGO | FECHA Y HORA | TIPO | BARRIO | ESTADO");
+        System.out.println("CODIGO | FECHA Y HORA | TIPO | BARRIO | ESTADO");
         ArrayList<LlamadaEmergencia> llamadas = sistema.getLlamadas();
         boolean tieneLlamadas = false;
 
