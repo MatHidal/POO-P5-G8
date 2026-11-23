@@ -52,10 +52,10 @@ public class VistaPrincipal {
                     vistaOperador.mostrarMenu();
                     break;
                 case "3":
-                    System.out.println("Modulo de ciudadanos en construccion.");
+                    VistaCiudadano.administrarCiudadanos(scanner,sistema);
                     break;
                 case "4":
-                    System.out.println("Modulo de seguimiento en construccion.");
+                    VistaNotaSeguimiento.administrarNotasSeguimiento(scanner,sistema);
                     break;
                 case "5":
                     System.out.println("Cerrando el Sistema ECU 911. Hasta pronto.");
