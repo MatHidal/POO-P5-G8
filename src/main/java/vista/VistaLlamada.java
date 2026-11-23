@@ -21,37 +21,21 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) {
         this.scanner = scanner;
     }
     /**
-     * Solicita la cédula del ciudadano y valida su formato; si es inválida, cancela el registro.
-     * Si el ciudadano no está registrado, solicita sus datos y lo agrega al sistema. Luego muestra
-     * los operadores disponibles, valida el código ingresado (cancelando si no existe), solicita los
-     * detalles de la emergencia, registra la llamada e imprime su código generado.
+     * Muestra el encabezado de registro, solicita y valida el código del operador (cancelando
+     * si no existe), pide y valida la cédula del ciudadano en bucle hasta que tenga 10 dígitos,
+     * registra al ciudadano si no existe o reutiliza sus datos, solicita tipo, ciudad, barrio y
+     * detalle de la emergencia, registra la llamada e imprime el resumen con su código generado.
      */
     private void registrarLlamada(){
-        System.out.println("\n--- REGISTRAR LLAMADA ---");
-        System.out.println("Ingrese cedula del ciudadano: ");
-        String cedula = scanner.nextLine().trim();
-        
-        if(!esCedulaValida(cedula)){
-            System.out.println("Error: Cedula invalida. Debe tener 10 digitos numericos. Registro cancelado");
-            return;
-        }
-        Ciudadano ciu = sistema.buscarCiudadano(cedula);
-        if(ciu == null){
-            System.out.println("Ciudadano no registrado. Ingrese los datos:");
-            System.out.println("Nombres: ");
-            String nombres = scanner.nextLine();
-            System.out.print("Apellidos: ");
-            String apellidos = scanner.nextLine();
-            ciu = new Ciudadano(cedula,nombres,apellidos);
-            sistema.getCiudadanos().add(ciu);
-        }
+        System.out.println("\nSISTEMA DE REGISTRO DE LLAMADAS ECU 911 (Version 1.0)");
+        System.out.println("[Menu Principal > 1. Llamadas > 1.2. Registrar llamada]");
         
         ArrayList<Operador> operadores = sistema.getOperadores();
-        System.out.println("Operadores disponibles: ");
+        System.out.println("\nSeleccione el operador que atiende la llamada:");
         for(Operador op: operadores){
-            System.out.println(op.getCodigo()+" | " + op.getNombres() + " " + op.getApellidos());
+            System.out.println("[" + op.getCodigo() + "] " + op.getNombres() + " " + op.getApellidos());
         }
-        System.out.println("Ingrese codigo del operador: ");
+                System.out.println("Ingrese codigo del operador: ");
         String codOp = scanner.nextLine();
         Operador op = sistema.buscarOperadorPorCodigo(codOp);
         
@@ -59,17 +43,79 @@ public VistaLlamada(SistemaECU911 sistema, Scanner scanner) {
             System.out.println("Operador no encontrado. Registro cancelado.");
             return;
         }
-        System.out.println("Tipo de emergencia");
-        String tipo = scanner.nextLine();
-        System.out.println("Ciudad: ");
+        
+        System.out.println("\nDATOS DEL CIUDADANO");
+        System.out.println("3. Cedula de identidad (10 digitos): ");
+        String cedula = scanner.nextLine().trim();
+        
+        while(!esCedulaValida(cedula)){
+            System.out.println("¡Error! La cedula debe contener exactamente 10 digitos numericos. Intente nuevamente.");
+            System.out.println("3. Cedula de identidad (10 digitos):");
+            cedula = scanner.nextLine().trim();
+        }
+        Ciudadano ciu = sistema.buscarCiudadano(cedula);
+        if(ciu == null){
+            System.out.println("1. Nombres: ");
+            String nombres = scanner.nextLine();
+            System.out.print("2. Apellidos: ");
+            String apellidos = scanner.nextLine();
+            ciu = new Ciudadano(cedula,nombres,apellidos);
+            sistema.getCiudadanos().add(ciu);
+        } else {
+            System.out.println("Ciudadano ya registrado en el sistema: " + ciu.getNombres() + " " + ciu.getApellidos() + ".");
+            System.out.println("Se utilizaran los datos existentes. Continuando con el registro de la emergencia...");
+        }
+        System.out.println("\nDATOS DE LA EMERGENCIA");
+        System.out.println("4. Tipo de emergencia:");
+        System.out.println("[1] Energia");
+        System.out.println("[2] Civil");
+        System.out.println("[3] Transito");
+        System.out.println("[4] Medio ambiente");
+        System.out.println("[5] Otros");
+        System.out.print("Seleccione una opcion (1-5): ");
+        String opTipo = scanner.nextLine().trim();
+        
+        String tipo;
+        switch (opTipo) {
+            case "1":
+                tipo = "Energia";
+                break;
+            case "2":
+                tipo = "Civil";
+                break;
+            case "3":
+                tipo = "Transito";
+                break;
+            case "4":
+                tipo = "Medio ambiente";
+                break;
+            case "5":
+                tipo = "Otros";
+                break;
+            default:
+                tipo = opTipo;
+                break;
+        }
+        System.out.println("5. Ciudad: ");
         String ciudad = scanner.nextLine();
-        System.out.print("Direccion o sector: ");
+        System.out.print("6. Barrio: ");
         String direccion = scanner.nextLine();
-        System.out.print("Descripcion: ");
+        System.out.print("7. Detalle: ");
         String descripcion = scanner.nextLine();
         
+        System.out.println("\nPROCESANDO REGISTRO...");
         LlamadaEmergencia nueva = sistema.registrarLlamada(ciu, op, tipo, ciudad, direccion, descripcion);
-        System.out.println("Llamada registrada con codigo: "+ nueva.getCodigo());
+        
+        System.out.println("¡Exito! La llamada ha sido registrada correctamente:");
+        System.out.println("-> Codigo: " + nueva.getCodigo());
+        System.out.println("-> Fecha y hora: " + nueva.getFechaHora());
+        System.out.println("-> Ciudadano: " + ciu.getNombres() + " " + ciu.getApellidos() + " (C.I. " + ciu.getCedula() + ")");
+        System.out.println("-> Emergencia: " + nueva.getTipoEmergencia() + " - " + nueva.getCiudad() + ", " + nueva.getBarrio());
+        System.out.println("-> Operador: " + op.getNombres() + " " + op.getApellidos());
+        System.out.println("-> Estado: " + nueva.getEstado());
+        
+        System.out.println("\nPresione ENTER para regresar al Menu de Llamadas...");
+        scanner.nextLine();
     }
 
     /**
